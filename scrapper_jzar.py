@@ -1,4 +1,3 @@
-# 1. import libraries
 import requests # to download html code
 from bs4 import BeautifulSoup # to navigate through the html code
 import pandas as pd
@@ -53,3 +52,24 @@ def scrape_hot100():
     best_100.to_csv('best_100.csv')
     
     return best_100
+
+
+# -----------------------------------------------------------
+
+def dataframes_generator():
+    
+    nothot =  pd.read_csv('genres_v2.csv')
+    hot100 = scrape_hot100()
+    
+    index_drop = []
+
+    for song in hot100.songs:
+        if ((nothot.song_name == song).sum() > 0):
+            idx = nothot[nothot.song_name == song].index
+            index_drop = index_drop + idx.values.tolist()
+    
+    nothot_clean = nothot.copy()        
+    nothot_clean = nothot_clean.drop(index_drop)
+    nothot_clean.reset_index(inplace = True, drop = True)
+    
+    return nothot_clean, hot100
