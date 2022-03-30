@@ -58,14 +58,14 @@ def scrape_hot100():
 
 def dataframes_generator():
     
-    nothot =  pd.read_csv('genres_v2.csv')
+    nothot =  pd.read_csv('archive/tracks_features.csv.csv')
     hot100 = scrape_hot100()
     
     index_drop = []
 
     for song in hot100.songs:
-        if ((nothot.song_name == song).sum() > 0):
-            idx = nothot[nothot.song_name == song].index
+        if ((nothot.name == song).sum() > 0):
+            idx = nothot[nothot.name == song].index
             index_drop = index_drop + idx.values.tolist()
     
     nothot_clean = nothot.copy()        
